@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Upload Article</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Eater&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .navber {
+        height: 10vh;
+        background-color: rgb(208, 210, 212);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        margin-bottom: 10px;
+      }
+
+      .navber-div {
+        display: flex;
+      }
+
+      .navber-div a {
+        background-color: rgb(97, 140, 231);
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        margin-right: 10px;
+        text-decoration: none;
+      }
+
+      .navber-div a:hover {
+        background-color: white;
+        color: rgb(97, 140, 231);
+        border: 2px solid rgb(97, 140, 231);
+      }
+
+      .navber p {
+        font-family: "Eater", serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      .form {
+        display: flex;
+        flex-direction: column;
+        width: 90vw;
+        margin: auto;
+      }
+
+      .input-form {
+        flex-grow: 2;
+        padding: 5px;
+        margin-bottom: 10px;
+      }
+
+      .form label {
+        font-size: larger;
+        font-weight: bold;
+      }
+
+      .input-div {
+        margin-bottom: 10px;
+      }
+
+      .input-form-sub {
+        background-color: rgb(97, 140, 231);
+        border: none;
+        padding: 5px 0;
+        margin-bottom: 10px;
+        color: white;
+        font-size: large;
+        cursor: pointer;
+      }
+
+      .input-form-sub:hover {
+        background-color: white;
+        color: rgb(97, 140, 231);
+        border: 2px solid rgb(97, 140, 231);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navber">
+      <p>Khatreez</p>
+      <div class="navber-div">
+        <a class="btn btn-light btn-lg" href="/admin/register" role="button">Add New User</a>
+        <a class="btn btn-light btn-lg" href="/admin/logout" role="button">Log Out</a>
+      </div>
+    </div>
+
+    <form action="/admin/data" method="post" class="form" onsubmit="return validateForm()">
+        <label for="title">Enter Title</label>
+        <input type="text" name="title" id="title" placeholder="Enter Title" class="input-form" required>
+    
+        <label for="article">Enter Article</label>
+        <textarea rows="30" type="text" name="article" id="article" placeholder="Enter Article" class="input-form" required></textarea>
+    
+        <label for="status">Enter Status</label>
+        <input type="text" name="status" id="status" placeholder="Enter Status" class="input-form" required>
+
+        <label for="imageurl">Enter Image Url</label>
+        <input type="text" name="imageurl" id="imageurl" placeholder="Enter Image Url" class="input-form" required>
+    
+        <div class="input-div">
+            <input type="checkbox" name="check" id="check"> Make This Article Main
+        </div>
+    
+        <input type="submit" value="Submit" class="input-form-sub">
+    </form>
+    
+    <script>
+        function validateForm() {
+            const title = document.getElementById('title').value.trim();
+            const article = document.getElementById('article').value.trim();
+            const status = document.getElementById('status').value.trim();
+            const imageurl = document.getElementById('imageurl').value.trim();
+            
+            if (title === '' || article === '' || status === '' || imageurl === '') {
+                alert('Please fill in all fields');
+                return false; 
+            }
+        
+            return true; 
+        }
+    </script>
+  </body>
+</html>
