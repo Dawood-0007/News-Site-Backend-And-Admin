@@ -69,7 +69,6 @@ app.get("/admin/revalidate", async (req, res) => {
           secret: process.env.REVALIDATE_SECRET
         }
       });
-      console.log(response);
       if (response.status === 200) {
         console.log("Revalidation successful");
       }
