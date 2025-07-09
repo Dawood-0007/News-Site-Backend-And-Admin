@@ -9,6 +9,7 @@ import session from "express-session";
 import env from "dotenv";
 import path from "path";
 import { fileURLToPath } from 'url';
+import axios from "axios";
 
 const app = express();
 const saltRounds = 10;
@@ -59,6 +60,23 @@ app.get("/admin/logout", (req, res) => {
     }
     res.redirect("/");
   });
+});
+
+app.get("/admin/revalidate", async (req, res) => {
+    if (req.isAuthenticated()) {
+      const response = await axios.get(process.env.NEXTAUTH_URL + "/api/revalidate", {
+        params: {
+          secret: process.env.REVALIDATE_SECRET
+        }
+      });
+      console.log(response);
+      if (response.status === 200) {
+        console.log("Revalidation successful");
+      }
+      res.redirect("/admin/uploads");
+    } else {
+      res.redirect("/");
+    }
 });
 
 app.get("/admin/uploads", (req, res) => {
