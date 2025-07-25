@@ -89,6 +89,22 @@ app.get("/data/article/:id", async (req, res) => {
   }
 });
 
+app.get("/data/article/:slug", async (req, res) => {
+  const slug = req.params.slug;
+  if (!slug || slug == "") return res.status(400).json({ error: "Invalid article SLUG" });
+
+  try {
+    const response = await db.query("SELECT * FROM blogs WHERE slug = $1", [slug]);
+    if (response.rows.length === 0) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+    res.json(response.rows);
+  } catch (err) {
+    console.error("Database query error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.get("/articles/filter/:type/:limit", async (req, res) => {
   const type = req.params.type;
   const limit = parseInt(req.params.limit) || 10;
