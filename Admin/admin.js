@@ -168,6 +168,8 @@ app.post("/admin/data", async (req, res) => {
     return res.status(400).json({ error: "All fields are required" });
   }
 
+  const formattedSlug = req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
   const responseData = {
     message: "Data added successfully!",
     formData: {
@@ -176,12 +178,13 @@ app.post("/admin/data", async (req, res) => {
       Status: req.body.status,
       imageurl: req.body.imageurl,
       Main: req.body.check === "on",
-      Date: formattedDate
+      Date: formattedDate,
+      slug: formattedSlug
     }
   };
-  
-  let result = await db.query("INSERT INTO blogs (title, article, status, imageurl, main, datetime) VALUES ($1, $2, $3, $4, $5, $6)", [
-    responseData.formData.Title, responseData.formData.Article, responseData.formData.Status, responseData.formData.imageurl, responseData.formData.Main, responseData.formData.Date
+
+  let result = await db.query("INSERT INTO blogs (title, article, status, imageurl, main, datetime, slug) VALUES ($1, $2, $3, $4, $5, $6, $7)", [
+    responseData.formData.Title, responseData.formData.Article, responseData.formData.Status, responseData.formData.imageurl, responseData.formData.Main, responseData.formData.Date, responseData.formData.slug
   ]);
 
   res.status(200).json(responseData);

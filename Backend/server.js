@@ -89,7 +89,7 @@ app.get("/data/article/:id", async (req, res) => {
   }
 });
 
-app.get("/data/article/:slug", async (req, res) => {
+app.get("/data/article/slug/:slug", async (req, res) => {
   const slug = req.params.slug;
   if (!slug || slug == "") return res.status(400).json({ error: "Invalid article SLUG" });
 
