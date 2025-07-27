@@ -19,8 +19,6 @@ const db = new pg.Pool({
 
 
 db.connect()
-  // .then(() => console.log("Connected to database"))
-  // .catch(err => console.error("Database connection error", err));
 
 const corsOptions = {
   origin: [

@@ -206,6 +206,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Internal Server Error" });
 });
 
-app.listen(port, () => console.log(`App listening on Port ${port}`))
+app.listen(port, () => console.log(`App listening on Port ${port}`));
 
 export default app;
+
+// Get the frontend from github repository now!
