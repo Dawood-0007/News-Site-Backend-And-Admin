@@ -14,6 +14,12 @@ and then run
   
 `node --watch Admin/admin.js` (to run admin Panel)  
 
+## What we used  
+In this project, we used node.js and ejs templating for admin panel.  
+
+Node.js Documentation visit : https://nodejs.org/docs/latest/api/  
+ejs Documentaion visit : https://ejs.co/#docs
+
 ## Your Contibution
 Your contibution can help us in making it alot more better product
 Fell free to contibute!
