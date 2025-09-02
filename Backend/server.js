@@ -22,9 +22,9 @@ db.connect()
 
 const corsOptions = {
   origin: [
-    'https://khatreez-server.vercel.app',
-    'https://khatreez-*.vercel.app',
-    'https://khatreez.vercel.app',
+    'https://Kalyptica-server.vercel.app',
+    'https://Kalyptica-*.vercel.app',
+    'https://Kalyptica.vercel.app',
     'http://localhost:3000',
     'http://localhost:5173'
   ],
