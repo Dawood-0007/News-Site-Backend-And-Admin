@@ -25,6 +25,7 @@ const corsOptions = {
     'https://Kalyptica-server.vercel.app',
     'https://Kalyptica-*.vercel.app',
     'https://Kalyptica.vercel.app',
+    'https://kalyptica.vercel.app',
     'http://localhost:3000',
     'http://localhost:5173'
   ],
@@ -37,7 +38,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.json("This is Khatreez Server.");
+  res.json("This is Kalyptica Server.");
 });
 
 app.get("/data/blogdisplay/:limit", async (req, res) => {

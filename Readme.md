@@ -1,9 +1,9 @@
 # Kalyptica Backend And Admin Panel
-This is khatreez backend and server and admin panel which is also live running in website.
+This is Kalyptica backend's server and admin panel which is also live running in website.
 
-Fro Admin Panel, you can visit https://khatreez-admin.vercel.app 
+Fro Admin Panel, you can visit https://kalyptica-admin.vercel.app 
 
-For Server, You can visit https://khatreezserver.vercel.app  
+For Server, You can visit https://kalypticaserver.vercel.app  
 
 ## How to setUp  
 First clone the code and connect your own SQL db with it by creating .env file and keeeping db creditential in it  
