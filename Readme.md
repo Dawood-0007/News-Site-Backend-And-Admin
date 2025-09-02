@@ -1,4 +1,4 @@
-# Khatreez Backend And Admin Panel
+# Kalyptica Backend And Admin Panel
 This is khatreez backend and server and admin panel which is also live running in website.
 
 Fro Admin Panel, you can visit https://khatreez-admin.vercel.app 
