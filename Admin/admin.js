@@ -37,7 +37,7 @@ app.use(
     session({
       secret: process.env.SESSION_SECRET,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
     })
   );
 app.use(cors());
@@ -101,37 +101,32 @@ app.post("/admin/login", (req, res, next) => {
   })(req, res, next);
 });
 
-app.post("/admin/register", async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-  
-    try {
-      const checkResult = await db.query("SELECT * FROM admin WHERE name = $1", [
-        username,
-      ]);
-  
-      if (checkResult.rows.length > 0) {
-        req.redirect("/admin");
-      } else {
-        bcrypt.hash(password, saltRounds, async (err, hash) => {
-          if (err) {
-            console.error("Error Storing Information:", err);
-          } else {
-            const result = await db.query(
-              "INSERT INTO admin (name, password) VALUES ($1, $2) RETURNING *",
-              [username, hash]
-            );
-            const user = result.rows[0];
-            req.login(user, (err) => {
-              console.log("success");
-              res.redirect("/admin/uploads");
-            });
-          }
-        });
-      }
-    } catch (err) {
-      console.log(err);
+app.post("/admin/register", async (req, res, next) => {
+  const { username, password } = req.body;
+
+  try {
+    const checkResult = await db.query(
+      "SELECT * FROM admin WHERE name = $1",
+      [username]
+    );
+    if (checkResult.rows.length) {
+      return res.redirect("/");  
     }
+
+    const hash = await bcrypt.hash(password, saltRounds);
+    const result = await db.query(
+      "INSERT INTO admin (name, password) VALUES ($1, $2) RETURNING *",
+      [username, hash]
+    );
+    const user = result.rows[0];
+
+    req.login(user, (err) => {
+      if (err) return next(err);
+      return res.redirect("/admin/uploads");
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 passport.use("local", new Strategy({
@@ -190,12 +185,48 @@ app.post("/admin/data", async (req, res) => {
   res.status(200).json(responseData);
 });
 
+app.get("/admin/allblog", async (req, res) => {
+  console.log("r")
+  console.log("User:", req.user);
+
+  if (req.isAuthenticated()) {
+    console.log("reached")
+    try {
+      let response = await db.query(`SELECT * FROM blogs ORDER BY id DESC`);
+      const blogs = response.rows;
+      res.render("blogs.ejs", { blogs })
+    } catch(err) {
+      console.error("Error Fetching Articles ", err);
+    }
+  }
+})
+
+app.delete("/admin/delete/:id", async (req, res) => {
+  if(req.isAuthenticated()) {
+    const id = req.params.id;
+    try {
+      let result = await db.query(`DELETE FROM blogs where id = $1`, [id]);
+      res.json({ success: true})
+    } catch (err) {
+      console.error("Error deleting Article ", err);
+      res.status(500).json({ success : false})
+    }
+  }
+});
+
 passport.serializeUser((user, cb) => {
-    cb(null, user);
+  cb(null, user.id);  
 });
-passport.deserializeUser((user, cb) => {
-    cb(null, user);
+
+passport.deserializeUser(async (id, cb) => {
+  try {
+    const result = await db.query('SELECT * FROM admin WHERE id = $1', [id]);
+    cb(null, result.rows[0]);
+  } catch (err) {
+    cb(err);
+  }
 });
+
 
 app.use((req, res) => {
   res.status(404).json({ error: "Not Found" });
