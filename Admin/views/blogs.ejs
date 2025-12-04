@@ -2,207 +2,219 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalyptica - Blogs</title>
-    <style>
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: #f5f7fa;
-            padding: 0;
-            margin: 0;
-            color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalyptica - Blogs</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 0;
+      margin: 0;
+      color: #333;
+    }
 
-        .navber {
-            height: 64px;
-            background: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 24px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+    .navber {
+      height: 64px;
+      background: #ffffff;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-        .navber p {
-            font-family: "Eater", serif;
-            font-size: 1.5rem;
-            color: #3a3a3a;
-            white-space: nowrap;
-        }
+    .navber p {
+      font-family: "Eater", serif;
+      font-size: 1.5rem;
+      color: #3a3a3a;
+      white-space: nowrap;
+    }
 
-        .navber-div {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
+    .navber-div {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
 
-        .navber-div a {
-            background-color: #3b82f6;
-            color: white;
-            padding: 8px 16px;
-            border: 2px solid #3b82f6;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
+    .navber-div a {
+      background-color: #3b82f6;
+      color: white;
+      padding: 8px 16px;
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
 
-        .navber-div a:hover {
-            background-color: #ffffff;
-            color: #3b82f6;
-            border-color: #3b82f6;
-        }
+    .navber-div a:hover {
+      background-color: #ffffff;
+      color: #3b82f6;
+      border-color: #3b82f6;
+    }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #3a3a3a;
-        }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #3a3a3a;
+    }
 
 
-        .blog-card {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            padding: 1.5rem;
-            margin: 1rem auto;
-            width: 90%;
-            max-width: 800px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+    .blog-card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 1.5rem;
+      margin: 1rem auto;
+      width: 90%;
+      max-width: 800px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        .blog-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-        }
+    .blog-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    }
 
-        .blog-card h2 {
-            margin-top: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1f2937;
-        }
+    .blog-card h2 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
 
-        .blog-card p {
-            margin: 0.5rem 0 1rem;
-            line-height: 1.5;
-            color: #4b5563;
-        }
+    .blog-card p {
+      margin: 0.5rem 0 1rem;
+      line-height: 1.5;
+      color: #4b5563;
+    }
 
-        .delete-btn {
-            background-color: #ef4444;
-            color: #fff;
-            border: 2px solid #ef4444;
-            padding: 0.5rem 1.25rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
+    .delete-btn {
+      background-color: #ef4444;
+      color: #fff;
+      border: 2px solid #ef4444;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
 
-        .delete-btn:hover {
-            background-color: #ffffff;
-            color: #ef4444;
-            border-color: #ef4444;
-        }
+    .delete-btn:hover {
+      background-color: #ffffff;
+      color: #ef4444;
+      border-color: #ef4444;
+    }
 
-        #loadMore {
-            display: block;
-            padding: 0.75rem 1.5rem;
-            margin: 2rem auto;
-            cursor: pointer;
-            background-color: #3b82f6;
-            color: #ffffff;
-            border: 2px solid #3b82f6;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.25s ease;
-        }
+    #loadMore {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      margin: 2rem auto;
+      cursor: pointer;
+      background-color: #3b82f6;
+      color: #ffffff;
+      border: 2px solid #3b82f6;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.25s ease;
+    }
 
-        #loadMore:hover:not(:disabled) {
-            background-color: #ffffff;
-            color: #3b82f6;
-            border-color: #3b82f6;
-        }
+    #loadMore:hover:not(:disabled) {
+      background-color: #ffffff;
+      color: #3b82f6;
+      border-color: #3b82f6;
+    }
 
-        #loadMore:disabled {
-            background-color: #cbd5e1;
-            color: #6b7280;
-            border-color: #cbd5e1;
-            cursor: default;
-        }
+    #loadMore:disabled {
+      background-color: #cbd5e1;
+      color: #6b7280;
+      border-color: #cbd5e1;
+      cursor: default;
+    }
 
-        .update-btn {
-          background-color: #3b82f6;
-          color: white;
-        }
+    .update-btn {
+      background-color: #3b82f6;
+      color: white;
+      border: 2px solid #3b82f6;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
 
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
+    .update-btn:hover {
+      background-color: #ffffff;
+      color: #3b82f6;
+      border-color: #3b82f6;
+    }
 
-            .navber-div {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background: #ffffff;
-                position: absolute;
-                top: 64px;
-                left: 0;
-                border-top: 1px solid #e0e0e0;
-                padding: 16px 0;
-                height: 95vh;
-            }
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
 
-            .navber-div a {
-                width: 90%;
-                margin: 6px auto;
-                text-align: center;
-            }
+      .navber-div {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #ffffff;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        border-top: 1px solid #e0e0e0;
+        padding: 16px 0;
+        height: 95vh;
+      }
 
-            .navber-div.active {
-                display: flex;
-            }
-        }
-    </style>
+      .navber-div a {
+        width: 90%;
+        margin: 6px auto;
+        text-align: center;
+      }
+
+      .navber-div.active {
+        display: flex;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <%- include("partials/header") %>
+  <%- include("partials/header") %>
 
-        <div id="blog-list">
-            <% if (locals.blogs && blogs.length) { %>
-                <% blogs.forEach(function(blog){ %>
-                    <div class="blog-card" data-id="<%= blog.id %>">
-                        <h2>
-                            <%= blog.title %>
-                        </h2>
-                        <p>
-                            <%= blog.article.substring(0,150) %>...
-                        </p>
-                        <button class="delete-btn">Delete</button>
-                        <button class="update-btn">Update</button>
-                    </div>
-                    <% }) %>
-                        <% } else { %>
-                            <p style="text-align:center;margin:1rem;color:#555;">No blogs available.</p>
-                            <% } %>
-        </div>
+    <div id="blog-list">
+      <% if (locals.blogs && blogs.length) { %>
+        <% blogs.forEach(function(blog){ %>
+          <div class="blog-card" data-id="<%= blog.id %>">
+            <h2>
+              <%= blog.title %>
+            </h2>
+            <p>
+              <%= blog.article.substring(0,150) %>...
+            </p>
+            <button class="delete-btn">Delete</button>
+            <button class="update-btn">Update</button>
+          </div>
+          <% }) %>
+            <% } else { %>
+              <p style="text-align:center;margin:1rem;color:#555;">No blogs available.</p>
+              <% } %>
+    </div>
 
-        <% if (locals.blogs && blogs.length) { %>
-            <button id="loadMore">Load More</button>
-            <% } %>
+    <% if (locals.blogs && blogs.length) { %>
+      <button id="loadMore">Load More</button>
+      <% } %>
 
-                <script type="text/application">
+        <script type="text/application">
     document.querySelector('.menu-toggle').addEventListener('click', () => {
     document.querySelector('.navber-div').classList.toggle('active');
   });

@@ -34,12 +34,12 @@ const db = new pg.Pool({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-    })
-  );
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -50,7 +50,7 @@ app.use(passport.session());
 
 
 app.get("/", (req, res) => {
-    res.render("Login.ejs");
+  res.render("Login.ejs");
 });
 
 app.get("/admin/logout", (req, res) => {
@@ -63,27 +63,27 @@ app.get("/admin/logout", (req, res) => {
 });
 
 app.get("/admin/revalidate", async (req, res) => {
-    if (req.isAuthenticated()) {
-      const response = await axios.get(process.env.NEXTAUTH_URL + "/api/revalidate", {
-        params: {
-          secret: process.env.REVALIDATE_SECRET
-        }
-      });
-      if (response.status === 200) {
-        console.log("Revalidation successful");
+  if (req.isAuthenticated()) {
+    const response = await axios.get(process.env.NEXTAUTH_URL + "/api/revalidate", {
+      params: {
+        secret: process.env.REVALIDATE_SECRET
       }
-      res.redirect("/admin/uploads");
-    } else {
-      res.redirect("/");
+    });
+    if (response.status === 200) {
+      console.log("Revalidation successful");
     }
+    res.redirect("/admin/uploads");
+  } else {
+    res.redirect("/");
+  }
 });
 
 app.get("/admin/uploads", (req, res) => {
-    if (req.isAuthenticated()) {
-      res.render("adminSection.ejs");
-    } else {
-      res.redirect("/");
-    }
+  if (req.isAuthenticated()) {
+    res.render("adminSection.ejs");
+  } else {
+    res.redirect("/");
+  }
 });
 
 app.get("/admin/register", (req, res) => {
@@ -110,7 +110,7 @@ app.post("/admin/register", async (req, res, next) => {
       [username]
     );
     if (checkResult.rows.length) {
-      return res.redirect("/");  
+      return res.redirect("/");
     }
 
     const hash = await bcrypt.hash(password, saltRounds);
@@ -135,20 +135,20 @@ passport.use("local", new Strategy({
 }, async (username, password, cb) => {
   try {
     const result = await db.query("SELECT * FROM admin WHERE name = $1", [username]);
-    
+
     if (result.rows.length === 0) {
       return cb(null, false, { message: 'Incorrect username or password' });
     }
 
     const user = result.rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
-    
+
     if (!isMatch) {
       return cb(null, false, { message: 'Incorrect username or password' });
     }
-    
+
     return cb(null, user);
-    
+
   } catch (err) {
     console.error('Authentication error:', err);
     return cb(err);
@@ -156,9 +156,9 @@ passport.use("local", new Strategy({
 }));
 
 app.post("/admin/data", async (req, res) => {
-  const date = new Date(); 
+  const date = new Date();
   const formattedDate = `${date.getDate()}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
-  
+
   if (!req.body.title || !req.body.article || !req.body.status || !req.body.imageurl) {
     return res.status(400).json({ error: "All fields are required" });
   }
@@ -195,27 +195,41 @@ app.get("/admin/allblog", async (req, res) => {
       let response = await db.query(`SELECT * FROM blogs ORDER BY id DESC`);
       const blogs = response.rows;
       res.render("blogs.ejs", { blogs })
-    } catch(err) {
+    } catch (err) {
       console.error("Error Fetching Articles ", err);
     }
   }
 })
 
 app.delete("/admin/delete/:id", async (req, res) => {
-  if(req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
     const id = req.params.id;
     try {
       let result = await db.query(`DELETE FROM blogs where id = $1`, [id]);
-      res.json({ success: true})
+      res.json({ succes });
     } catch (err) {
       console.error("Error deleting Article ", err);
-      res.status(500).json({ success : false})
+      res.status(500).json({ success: false })
+    }
+  }
+});
+
+app.get("/admin/update/:id", async (req, res) => {
+  if (req.isAuthenticated()) {
+    const id = req.params.id;
+    try {
+      let result = await db.query(`SELECT * FROM blogs where id = $1`, [id]);
+      const blog = result.rows;
+      res.render("update.ejs", { blog: blog })
+    } catch (err) {
+      console.error("Error deleting Article ", err);
+      res.status(500).json({ success: false })
     }
   }
 });
 
 passport.serializeUser((user, cb) => {
-  cb(null, user.id);  
+  cb(null, user.id);
 });
 
 passport.deserializeUser(async (id, cb) => {
