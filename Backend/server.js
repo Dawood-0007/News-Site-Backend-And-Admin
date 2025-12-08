@@ -17,7 +17,6 @@ const db = new pg.Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-
 db.connect()
 
 const corsOptions = {

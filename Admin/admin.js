@@ -31,6 +31,8 @@ const db = new pg.Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+db.connect()
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(

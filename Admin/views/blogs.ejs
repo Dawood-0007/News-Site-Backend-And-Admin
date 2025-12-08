@@ -214,76 +214,85 @@
       <button id="loadMore">Load More</button>
       <% } %>
 
-        <script type="text/application">
-    document.querySelector('.menu-toggle').addEventListener('click', () => {
-    document.querySelector('.navber-div').classList.toggle('active');
-  });
 
-    const blogs = <%- JSON.stringify(locals.blogs || []) %>;
-
-    let skip = blogs.length;
-    const limit = 10;
-    const loadBtn = document.getElementById('loadMore');
-    const blogList = document.getElementById('blog-list');
-
-    if (loadBtn) {
-      loadBtn.addEventListener('click', async () => {
-        try {
-          const res = await fetch(`/blogs?skip=${skip}&limit=${limit}`, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        <script type="text/javascript">
+          document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.navber-div').classList.toggle('active');
           });
-          const moreBlogs = await res.json();
 
-          if (!moreBlogs.length) {
-            loadBtn.disabled = true;
-            loadBtn.textContent = 'No more blogs';
-            return;
-          }
+          // Expression expected.javascript (ignore this error)
+          const blogs = <%- JSON.stringify(locals.blogs || []) %>; 
 
-          moreBlogs.forEach(b => {
-            const div = document.createElement('div');
-            div.className = 'blog-card';
-            div.dataset.id = b.id;
-            div.innerHTML = `
+          let skip = blogs.length;
+          const limit = 10;
+          const loadBtn = document.getElementById('loadMore');
+          const blogList = document.getElementById('blog-list');
+
+          if (loadBtn) {
+            loadBtn.addEventListener('click', async () => {
+              try {
+                const res = await fetch(`/blogs?skip=${skip}&limit=${limit}`, {
+                  headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                const moreBlogs = await res.json();
+
+                if (!moreBlogs.length) {
+                  loadBtn.disabled = true;
+                  loadBtn.textContent = 'No more blogs';
+                  return;
+                }
+
+                moreBlogs.forEach(b => {
+                  const div = document.createElement('div');
+                  div.className = 'blog-card';
+                  div.dataset.id = b.id;
+                  div.innerHTML = `
               <h2>${b.title}</h2>
-              <p>${b.article.substring(0,150)}...</p>
+              <p>${b.article.substring(0, 150)}...</p>
               <button class="delete-btn">Delete</button>
             `;
-            blogList.appendChild(div);
+                  blogList.appendChild(div);
+                });
+
+                skip += moreBlogs.length;
+              } catch (err) {
+                console.error(err);
+                alert('Error loading more blogs');
+              }
+            });
+          }
+
+          document.getElementById("blog-list").addEventListener("click", async (e) => {
+
+            if (e.target.classList.contains("delete-btn")) {
+
+              console.log("Delete clicked");
+
+              const card = e.target.closest(".blog-card");
+              const id = card.dataset.id;
+
+              if (!confirm("Delete this blog?")) return;
+
+              const res = await fetch(`/admin/delete/${id}`, {
+                method: "DELETE",
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+              });
+
+              if (res.ok) {
+                card.remove();
+              } else {
+                alert("Delete failed");
+              }
+            }
+
+            if (e.target.classList.contains("update-btn")) {
+              const card = e.target.closest(".blog-card");
+              const id = card.dataset.id;
+              window.location.href = `/admin/update/${id}`;
+            }
           });
 
-          skip += moreBlogs.length;
-        } catch (err) {
-          console.error(err);
-          alert('Error loading more blogs');
-        }
-      });
-    }
-
-    blogList.addEventListener('click', async (e) => {
-      if (!e.target.classList.contains('delete-btn')) return;
-
-      const card = e.target.closest('.blog-card');
-      const id = card.dataset.id;
-      if (!confirm('Delete this blog?')) return;
-
-      try {
-        const res = await fetch(`/admin/delete/${id}`, {
-          method: 'DELETE',
-          headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        });
-
-        if (res.ok) {
-          card.remove();
-        } else {
-          alert('Delete failed');
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Error deleting blog');
-      }
-    });
-  </script>
+        </script>
 </body>
 
 </html>
