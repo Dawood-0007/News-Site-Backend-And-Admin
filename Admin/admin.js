@@ -71,9 +71,6 @@ app.get("/admin/revalidate", async (req, res) => {
         secret: process.env.REVALIDATE_SECRET
       }
     });
-    if (response.status === 200) {
-      console.log("Revalidation successful");
-    }
     res.redirect("/admin/uploads");
   } else {
     res.redirect("/");
@@ -188,11 +185,7 @@ app.post("/admin/data", async (req, res) => {
 });
 
 app.get("/admin/allblog", async (req, res) => {
-  console.log("r")
-  console.log("User:", req.user);
-
   if (req.isAuthenticated()) {
-    console.log("reached")
     try {
       let response = await db.query(`SELECT * FROM blogs ORDER BY id DESC`);
       const blogs = response.rows;
@@ -229,6 +222,43 @@ app.get("/admin/update/:id", async (req, res) => {
     }
   }
 });
+
+app.post("/admin/update/:id", async (req, res) => {
+  if (req.isAuthenticated()) {
+    const id = req.params.id;
+    const { title, article, status, imageurl, check } = req.body;
+    const isMain = check ? true : false;
+    const date = new Date();
+
+    const formattedDate = `${date.getDate()}-${String(date.getMonth() + 1).padStart(2, '0')}-${date.getFullYear()}`;
+
+    const formattedSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    const formData = {
+      title: title,
+      article: article,
+      status: status,
+      imageurl: imageurl,
+      main: isMain,
+      date: formattedDate,
+      slug: formattedSlug
+    }
+  
+    try {
+      await db.query(
+        `UPDATE blogs 
+         SET title = $1, article = $2, status = $3, imageurl = $4, main = $5, datetime = $6, slug = $7
+         WHERE id = $8`, [ formData.title, formData.article, formData.status, formData.imageurl, formData.main, formData.date, formData.slug, id ]
+      );
+  
+      res.redirect("/admin/allblog");
+    } catch (err) {
+      console.error("Error updating article:", err);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+});
+
 
 passport.serializeUser((user, cb) => {
   cb(null, user.id);
