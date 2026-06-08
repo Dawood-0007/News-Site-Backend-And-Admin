@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import pg from "pg";
 import env from "dotenv";
+import { rateLimit } from 'express-rate-limit';
 
 env.config();
 const app = express();
@@ -18,6 +19,14 @@ const db = new pg.Pool({
 });
 
 db.connect()
+
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: 'Too many requests, please try again later.',
+});
 
 const corsOptions = {
   origin: [
@@ -35,6 +44,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(limiter);
 
 app.get("/", (req, res) => {
   res.json("This is Kalyptica Server.");
