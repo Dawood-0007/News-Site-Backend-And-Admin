@@ -10,6 +10,7 @@ import env from "dotenv";
 import path from "path";
 import { fileURLToPath } from 'url';
 import axios from "axios";
+import { rateLimit } from "express-rate-limit"
 
 const app = express();
 const saltRounds = 10;
@@ -33,6 +34,14 @@ const db = new pg.Pool({
 
 db.connect()
 
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: 'Too many requests, please try again later.',
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
@@ -46,7 +55,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-
+app.use(limiter);
 app.use(passport.initialize());
 app.use(passport.session());
 
