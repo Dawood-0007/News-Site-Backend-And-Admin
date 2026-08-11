@@ -63,7 +63,7 @@ app.get("/data/blogdisplay/:limit", async (req, res) => {
 
 app.get("/data/blogmain", async (req, res) => {
   try {
-    const response = await db.query('SELECT * FROM blogs WHERE main = true ORDER BY id DESC');
+    const response = await db.query('SELECT * FROM "blogs" WHERE main = true ORDER BY id DESC');
     res.json(response.rows);
   } catch (err) {
     console.error("Database query error:", err);
